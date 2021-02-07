@@ -1,10 +1,28 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.less']
+import { AccountService } from './_services';
+import { UserInfo } from './_models';
+import { RouterOutlet } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+
+
+@Component(
+{ 
+    selector: 'app', 
+    templateUrl: 'app.component.html'
 })
 export class AppComponent {
-  title = 'MyAuth-Frontend';
+    userInfo: UserInfo;
+
+    constructor(private accountService: AccountService , private translate: TranslateService) {
+        this.accountService.userInfo.subscribe(x => this.userInfo = x);
+        translate.setDefaultLang('en');
+    }
+    prepareRoute(outlet: RouterOutlet) {
+        return outlet && outlet.activatedRouteData && outlet.activatedRouteData.animation;
+      }
+
+    logout() {
+        this.accountService.logout();
+    }
 }

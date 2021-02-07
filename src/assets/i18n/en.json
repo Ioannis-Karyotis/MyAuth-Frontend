@@ -1,0 +1,6 @@
+{
+    "ApiStatus":{
+        "InternalError" : "Server Error",
+        "NotExistingUser" : "The credentials you gave were wrong"
+    }
+}
