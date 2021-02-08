@@ -50,10 +50,7 @@ export class AccountService {
                     info.id = successLogin.data.id
                     this.userInfoSubject.next(info);
 
-                    let dialogRef = this.dialog.open(FaceAuthComponent, {
-                        height: '600px',
-                        width: '1000px',
-                      });
+                    let dialogRef = this.dialog.open(FaceAuthComponent);
                 }
 
                 
@@ -74,13 +71,15 @@ export class AccountService {
         return this.http.post<HttpResponseData<respModels.SuccessfulLoginRespModel>>(`${environment.apiUrl}/api/authentication/facial/recognition`,facialRecoUser, httpOptions)
             .pipe(map(successLogin => {
                 //store user details and jwt token in local storage to keep user logged in between page refreshes
-                let info = new UserInfo();
+                let info = this.UserInfo;
 
                 info.userToken = successLogin.data.authToken;
                 info.id = successLogin.data.id;
 
                 localStorage.setItem('authToken', JSON.stringify(info));
                 this.userInfoSubject.next(info);
+
+                let dialogRef = this.dialog.closeAll();
                 return successLogin;
             }));
     }
