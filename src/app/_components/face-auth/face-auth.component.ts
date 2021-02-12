@@ -7,6 +7,7 @@ import { CountdownComponent, CountdownEvent } from 'ngx-countdown';
 import { first } from 'rxjs/operators';
 import * as $ from 'jquery'
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-face-auth',
@@ -45,7 +46,11 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
   stopTracking: boolean;
 
 
-  constructor(private accountService: AccountService,private _snackBar: MatSnackBar) { }
+  constructor(private accountService: AccountService,
+              private _snackBar: MatSnackBar,
+              private route: ActivatedRoute,
+              private router: Router,
+              ) { }
 
   public ngOnInit() { 
     $('.flash').hide(); 
@@ -97,6 +102,7 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
     this.canvas = document.getElementById('cropCvs');
     let ctx = this.canvas.getContext('2d');
     ctx.drawImage(this.video, ((this.video.videoWidth -  this.canvas.width) / 2), ((this.video.videoHeight -  this.canvas.height) / 2), this.canvas.width, this.canvas.height, 0, 0, this.canvas.width,this.canvas.height);
+
     if(this.pass == true){
 
       if(this.spinerVisible == true && this.stopTracking == false){
@@ -105,9 +111,9 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
       }
       
       this.detections = await faceapi.detectAllFaces(this.video2, new faceapi.TinyFaceDetectorOptions());
-      //let resizedDetections = faceapi.resizeResults(this.detections, this.displaySize);
-      //this.canvas2.getContext('2d').clearRect(0, 0, this.canvas2.width, this.canvas2.height);
-      //faceapi.draw.drawDetections(this.canvas2, resizedDetections);
+      // let resizedDetections = faceapi.resizeResults(this.detections, this.displaySize);
+      // this.canvas2.getContext('2d').clearRect(0, 0, this.canvas2.width, this.canvas2.height);
+      // faceapi.draw.drawDetections(this.canvas2, resizedDetections);
      
       
       if(this.detections != null && this.detections.length > 0){
@@ -122,19 +128,17 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
         }
         console.log(this.countdown.left);
       }
+
     }
     
-    // if(this.pass == false ){
-    //   this.pass = true;
-    // }
-    //window.requestAnimationFrame(() => this.createFaceCanvas());
-    if(this.spinerVisible == false && this.stopTracking == false){
+    if(this.stopTracking == false){
       let self = this;
       this.findFaceTimeout = setTimeout(function() {
         self.createFaceCanvas();
       }, 1000/60);
     }
   }
+
   async onTimerFinished(e: CountdownEvent){
     if (e.action == 'done') {
       this.timerVisible = false;
@@ -143,7 +147,7 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
         console.log("Found Face was Succesfull");
         this.foundFaceStatus = 2;
         clearTimeout(this.findFaceTimeout);
-        this.stopTracking == true;
+        this.stopTracking = true;
         this.capture();
       }
       else{
@@ -189,7 +193,8 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
       .pipe(first())
       .subscribe({
           next: () => {
-              
+            const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+            this.router.navigateByUrl(returnUrl);
           },
           error: error => {
               console.log(error);

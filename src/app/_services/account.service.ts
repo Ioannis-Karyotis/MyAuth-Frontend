@@ -50,7 +50,7 @@ export class AccountService {
                     info.id = successLogin.data.id
                     this.userInfoSubject.next(info);
 
-                    let dialogRef = this.dialog.open(FaceAuthComponent);
+                    return successLogin;
                 }
 
                 

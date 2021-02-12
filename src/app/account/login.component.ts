@@ -12,6 +12,8 @@ import {
 
 import { AccountService, AlertService } from '@app/_services';
 import { LoginReqModel } from '@app/_models/_requestModels';
+import { MatDialog } from '@angular/material/dialog';
+import { FaceAuthComponent } from '@app/_components/face-auth/face-auth.component';
 
 @Component({ templateUrl: 'login.component.html' })
 export class LoginComponent implements OnInit {
@@ -24,7 +26,8 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private accountService: AccountService,
-        private alertService: AlertService
+        private alertService: AlertService,
+        private dialog: MatDialog
     ) { }
 
     ngOnInit() {
@@ -57,9 +60,7 @@ export class LoginComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    // get return url from query parameters or default to home page
-                    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-                    this.router.navigateByUrl(returnUrl);
+                    let dialogRef = this.dialog.open(FaceAuthComponent);
                 },
                 error: error => {
                     this.alertService.error(error);
