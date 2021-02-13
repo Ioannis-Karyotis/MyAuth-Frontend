@@ -165,8 +165,7 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
 
   capture() {
     var context = this.canvasScreenshot.nativeElement.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
-    this.capture = this.canvasScreenshot.nativeElement.toDataURL("image/png");
-
+    this.capture = this.canvasScreenshot.nativeElement.toDataURL();
     var existingUserInfo = this.accountService.UserInfo;
     let facialRecoUser = new LoginFacialReqModel()
     facialRecoUser.x_seq = existingUserInfo.x_seq;

@@ -10,6 +10,7 @@ import { UserInfo, HttpResponseData } from '@app/_models';
 import {FaceAuthComponent} from '@app/_components/face-auth/face-auth.component';
 import * as reqModels from '@app/_models/_requestModels'
 import * as respModels from '@app/_models/_responseModels'
+import * as enums from '@app/enums'
 import { LoginFacialReqModel } from '@app/_models/_requestModels';
 
 @Injectable({ providedIn: 'root' })
@@ -41,7 +42,7 @@ export class AccountService {
             responseType: 'json'
           };
 
-        return this.http.post<HttpResponseData<respModels.SuccessfulLoginRespModel>>(`${environment.apiUrl}/api/authentication/signin`, existingUser , httpOptions)
+        return this.http.post<HttpResponseData<respModels.SuccessfulLoginRespModel , enums.ClientsApiErrorCodes>>(`${environment.apiUrl}/api/authentication/signin`, existingUser , httpOptions)
             .pipe(map(successLogin => {
                 if(successLogin.success == true){
                      //store user details and jwt token in local storage to keep user logged in between page refreshes
@@ -68,7 +69,7 @@ export class AccountService {
             responseType: 'json'
           };
 
-        return this.http.post<HttpResponseData<respModels.SuccessfulLoginRespModel>>(`${environment.apiUrl}/api/authentication/facial/recognition`,facialRecoUser, httpOptions)
+        return this.http.post<HttpResponseData<respModels.SuccessfulLoginRespModel , enums.ClientsApiErrorCodes>>(`${environment.apiUrl}/api/authentication/facial/recognition`,facialRecoUser, httpOptions)
             .pipe(map(successLogin => {
                 //store user details and jwt token in local storage to keep user logged in between page refreshes
                 let info = this.UserInfo;

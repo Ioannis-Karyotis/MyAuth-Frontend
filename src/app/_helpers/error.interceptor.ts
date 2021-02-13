@@ -10,6 +10,8 @@ import { UpperCasePipe } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 
+import * as enums from '@app/enums'
+
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
 
@@ -17,7 +19,7 @@ export class ErrorInterceptor implements HttpInterceptor {
         
     }
 
-    intercept(request: HttpRequest<HttpResponseData<any>>, next: HttpHandler): Observable<HttpEvent<HttpResponseData<any>>> {
+    intercept(request: HttpRequest<HttpResponseData<any, enums.ClientsApiErrorCodes>>, next: HttpHandler): Observable<HttpEvent<HttpResponseData<any, enums.ClientsApiErrorCodes>>> {
         let accountService = this.injector.get(AccountService);
         let _snackBar = this.injector.get(MatSnackBar);
         let translate = this.injector.get(TranslateService);
@@ -36,7 +38,7 @@ export class ErrorInterceptor implements HttpInterceptor {
             const error = err.error.error || err.statusText;
             console.error(err);
 
-            translate.get('ApiStatus.' + error).subscribe((res: string) => {
+            translate.get('ApiStatus.' + error.description).subscribe((res: string) => {
                 _snackBar.open(res ,'OK',{
                     duration : 3000,
                     panelClass: ['failure-snackbar']
