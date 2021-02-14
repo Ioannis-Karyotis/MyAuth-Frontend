@@ -1,8 +1,8 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
 import { environment } from '@environments/environment';
@@ -70,7 +70,8 @@ export class AccountService {
           };
 
         return this.http.post<HttpResponseData<respModels.SuccessfulLoginRespModel , enums.ClientsApiErrorCodes>>(`${environment.apiUrl}/api/authentication/facial/recognition`,facialRecoUser, httpOptions)
-            .pipe(map(successLogin => {
+            .pipe(
+                map(successLogin => {
                 //store user details and jwt token in local storage to keep user logged in between page refreshes
                 let info = this.UserInfo;
 
@@ -82,7 +83,15 @@ export class AccountService {
 
                 let dialogRef = this.dialog.closeAll();
                 return successLogin;
-            }));
+
+                }),
+                catchError((err) => {
+                    console.log('error caught in service')
+                    this.userInfoSubject.next(null);
+                    let dialogRef = this.dialog.closeAll();
+                    return throwError(err);    //Rethrow it back to component
+                })
+            );
     }
 
     logout() {

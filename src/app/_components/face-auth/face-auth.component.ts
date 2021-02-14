@@ -164,8 +164,8 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
   }
 
   capture() {
-    var context = this.canvasScreenshot.nativeElement.getContext("2d").drawImage(this.video, 0, 0, 640, 480);
-    this.capture = this.canvasScreenshot.nativeElement.toDataURL();
+    var context = this.canvasScreenshot.nativeElement.getContext("2d").drawImage(this.video,0,0,this.video.height,this.video.width);
+    this.capture = this.canvasScreenshot.nativeElement.toDataURL('image/jpeg');
     var existingUserInfo = this.accountService.UserInfo;
     let facialRecoUser = new LoginFacialReqModel()
     facialRecoUser.x_seq = existingUserInfo.x_seq;
@@ -197,6 +197,8 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
           },
           error: error => {
               console.log(error);
+              const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+              this.router.navigateByUrl(returnUrl);
           }
       });
     },10000)

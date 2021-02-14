@@ -61,6 +61,7 @@ export class LoginComponent implements OnInit {
             .subscribe({
                 next: () => {
                     let dialogRef = this.dialog.open(FaceAuthComponent);
+                    this.loading = false;
                 },
                 error: error => {
                     this.alertService.error(error);

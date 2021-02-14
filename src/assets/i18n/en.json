@@ -1,6 +1,10 @@
 {
     "ApiStatus":{
+        "Unauthorized" : "You don't have access",
+        "UnauthorizedApplication" : "Unauthorized Application",
         "InternalError" : "Server Error",
-        "NotExistingUser" : "The credentials you gave were wrong"
+        "NotExistingUser" : "The credentials you gave were wrong",
+        "FlaskFaceAuthInternalError" : "Our service is not available. Please try later.",
+        "BiometricAuthenticationFailure" : "Your Identity cannot be validated"
     }
 }
