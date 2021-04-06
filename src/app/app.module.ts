@@ -18,7 +18,7 @@ import { HomeComponent } from './home';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material/material.module';
 import { registerLocaleData } from '@angular/common';
-import localeEn from '@angular/common/locales/en';;
+import localeEn from '@angular/common/locales/en';
 import { FaceAuthComponent } from './_components/face-auth/face-auth.component'
 
 
