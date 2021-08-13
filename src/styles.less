@@ -6,8 +6,6 @@ html,
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  min-height: 100vh;
-  min-width: 100vh;
   background: #e2e2e2;
   background: url("./assets/MyAuthSplashWallpaper.png") no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -17,6 +15,7 @@ body {
 }
 
 .app-header {
+  position: fixed;
   justify-content: space-between;
   top: 0;
   left: 0;
@@ -26,22 +25,18 @@ body {
   height: 4.5em !important;
 }
 
-.app-container {
-  position: relative;
-  min-height: 100vh;
-  min-width: 100vh;
-  overflow: hidden;
-}
-
 .logo {
   width: 30%;
   height: 30%;
   margin-top: 5px;
 }
 
+.outlet{
+  // min-width: 100vh;
+  min-height: 100vh;
+}
+
 .box {
-  position: relative;
-  top: 0;
   opacity: 1;
   width: 30em;
   border-radius: 10px;
@@ -75,44 +70,16 @@ body {
   z-index: -1;
 }
 
-.login-wrapper .example-form {
-  min-width: 100%;
-  max-width: 300px;
-  width: 100%;
-}
-
-.login-wrapper .example-full-width,
-.login-wrapper .btn-block {
-  width: 100%;
-}
-
-.login-wrapper mat-card-header {
-  text-align: center;
-  width: 100%;
-  display: block;
-  font-weight: 700;
-}
-
-.login-wrapper mat-card-header mat-card-title {
-  font-size: 30px;
-  margin: 0;
-}
-
-.login-wrapper .mat-card {
-  padding: 40px 70px 50px;
-}
-
-.login-wrapper .mat-stroked-button {
-  border: 1px solid currentColor;
-  line-height: 54px;
-  background: #FFF7FA;
-}
 
 .warn {
   color: #CB0F0F;
 }
 
-
+.basic-input{
+  font-size: 15px;
+  height:3em;
+  width:80%;
+}
 
 .success-snackbar button{
   background-color: #C2185B;
@@ -146,7 +113,6 @@ canvas {
   z-index: 10!important  ;
 }
 
-
 .flash{ 
   position:fixed; 
   top:0;
@@ -161,4 +127,26 @@ canvas {
 
 .hidden {
   display:none;
+}
+
+.loading{
+  position: absolute;
+  margin: auto auto;
+  left: 0;
+  right: 0;
+  top: 45%;
+  bottom: 0;
+  text-align: center;
+  z-index: 10!important;
+  font-size:xx-large;
+  font-weight: 700;
+  color: black;
+  white-space: nowrap;
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }

@@ -2,16 +2,20 @@
   
 
 <!-- main app container -->
-<div class="app-container" fxLayout="column" fxLayoutAlign="start center">
+<!-- <div class="app-container" fxLayout="column" fxLayoutAlign="stretch center"> -->
     <mat-toolbar color="primary" class="app-header">
-        <span><img src="./../assets/MyAuthLogo.png" class="logo"></span>
+        <span><img id='back' src="./../assets/MyAuthLogo.png" class="logo"></span>
         <span class="nav-tool-items">
-          <a mat-button routerLink="login" routerLinkActive="active">Log in</a>
-          <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Register</a>
+          <!-- <a mat-button routerLink="login" routerLinkActive="active">Log in</a> -->
+          <!-- <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Register</a> -->
         </span>
     </mat-toolbar>
-    <router-outlet fxFlexOffset="20px" #outlet="outlet"></router-outlet>
-</div>
+    <div fxLayout="column" fxLayoutAlign="center center" class="outlet" >
+        <router-outlet></router-outlet>
+        <app-loader></app-loader>
+    </div>
+      
+<!-- </div> -->
 
 
 <!-- credits -->

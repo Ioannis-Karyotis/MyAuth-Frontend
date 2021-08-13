@@ -1,0 +1,14 @@
+<div id="faceDiv" class="hidden">
+    <video id='outerVideo' width="500px" height="560px" autoplay muted></video>
+    <video id='innerVideo' width="250px" height="280px" autoplay muted></video>
+    <div class='videoCoating'></div>    
+    <video  id='videoCenter'   width="250px" height="280px" autoplay muted></video>
+    <canvas id="cropCvs" width="250px" height="280px"> </canvas>
+    <canvas id="faceCanvas" width="250px" height="280px"> </canvas>
+    <h3 class="indication">Put your face in the hole</h3>
+    <countdown class="PictureCountdown" #cd  [ngStyle]="countdownVisibility" [config]="{demand: true, leftTime:4 ,format:'s'}" (event)="onTimerFinished($event)"></countdown>
+</div>
+<div class="flash"></div>  
+<img id="screenshot" src="" class="hidden">
+<canvas #canvasScreenshot id="canvasScreenshot" width="500" height="560" style="display: none;"></canvas>
+<mat-spinner *ngIf="spinerVisible == true"></mat-spinner>   

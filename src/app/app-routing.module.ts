@@ -1,19 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { HomeComponent } from './home';
-import { AuthGuard } from './_helpers';
-
-const accountModule = () => import('./account/account.module').then(x => x.AccountModule);
-const usersModule = () => import('./users/users.module').then(x => x.UsersModule);
+import { AuthGuard,LoginGuard } from '@app/shared/helpers/guards';
 
 const routes: Routes = [
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-    { path: 'users', loadChildren: usersModule, canActivate: [AuthGuard] },
-    { path: 'account', loadChildren: accountModule },
-
+    { path: 'auth', loadChildren: () => import('./features/auth/auth.module').then(m => m.AuthModule ), canActivate:[LoginGuard] },
+    { path: 'account', loadChildren: () => import('./features/account/account.module').then(m => m.AccountModule ), canActivate:[AuthGuard]},
+    { path: 'accounts/external-auth/oauth', loadChildren: () => import('./features/external-auth/external-auth.module').then(m => m.ExternalAuthModule ) },
     // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: 'auth' }
 ];
 
 @NgModule({
