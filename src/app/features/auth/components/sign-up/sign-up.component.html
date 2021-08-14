@@ -58,13 +58,11 @@
                         </button>
                         <a routerLink="../sign-in"  mat-button>Login</a>
                     </div>
+                    <div *ngIf="t.invalid && loading == true" class="warn">
+                        Please fill the form correctly
+                    </div>
                 </div>
-            </div>
-            
-            <div *ngIf="t.invalid && sumbitted == true" class="warn">
-                Please fill the form correctly
             </div>
         </form>
         </mat-card-content>
-    
 </mat-card>

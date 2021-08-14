@@ -34,7 +34,6 @@ export class SignUpComponent implements OnInit {
     loading = false;
     hide = true;
     hide2 = true;
-    sumbitted = false;  
     isOpen = true;
 
     constructor(
@@ -70,21 +69,19 @@ export class SignUpComponent implements OnInit {
 
     onSubmit() {
 
-        this.sumbitted = true;
         this.loading = true;
         // stop here if form is invalid
         if (this.form.invalid) {
             setTimeout(() => {
-                this.sumbitted = false;
-              }, 3000);
+                this.loading = false;
+            }, 3000);
             
             return;
         }
-        this.loading = false;
         let dialogRef = this.dialog.open(FaceRegistrationComponent, {
             data: {formData : this.form.value}
         });
-
+        this.loading = false;
     }
 
     //ERROR MESSAGES
