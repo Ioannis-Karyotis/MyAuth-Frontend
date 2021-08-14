@@ -101,4 +101,16 @@ export class SessionService {
     this.router.navigate(['/account/login']);
 
   }
+
+  public logoutExternal() {
+
+    const session = this.UserInfo
+    session.email = null;
+    session.userToken = null;
+    session.x_seq = null;
+    localStorage.setItem('authToken', JSON.stringify(session));
+
+    this.userInfoSubject.next(session);
+    this.isLoggedInSubject.next(false);
+  }
 }

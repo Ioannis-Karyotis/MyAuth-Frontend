@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { UserInfo } from '@app/shared/models/general';
-import { ExternalLoginReqModel, LoginFacialReqModel } from '@app/shared/models/requestModels';
+import { ExternalLoginAuthTokenReqModel, ExternalLoginReqModel, LoginFacialReqModel } from '@app/shared/models/requestModels';
 import { ApiService, SessionService } from '@app/shared/services';
 import { throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -26,6 +26,19 @@ export class ExternalAuthService {
 
   ExternalSignIn(existingUser : ExternalLoginReqModel){
     return this.apiService.ExternalSignIn(existingUser)
+    .pipe(
+      map(successLogin => {
+          return successLogin;
+      }),
+      catchError((err) => {
+          console.log('error caught in service')
+          return throwError(err);    //Rethrow it back to component
+      })
+    );
+  }
+
+  ExternalAuthTokenSignIn(existingUser : ExternalLoginAuthTokenReqModel){
+    return this.apiService.ExternalAuthTokenSignIn(existingUser)
     .pipe(
       map(successLogin => {
           return successLogin;

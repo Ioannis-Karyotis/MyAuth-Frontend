@@ -70,6 +70,7 @@ export function loadRemoteEnv(sessionService: SessionService) {
                     await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/faceModels');
                     await faceapi.nets.faceExpressionNet.loadFromUri('/assets/faceModels');
                     await faceapi.loadTinyFaceDetectorModel('/assets/faceModels');
+
                     let base_image = new Image();
                     base_image.src = "/assets/startFaceDetect.png";
                     base_image.onload = function() {

@@ -8,18 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginReqModel } from '@app/shared/models/requestModels';
 import { FaceAuthComponent } from '@app/shared/components/face-auth/face-auth.component';
 import { animate, style, transition, trigger } from '@angular/animations';
-// import {
-//     trigger,
-//     state,
-//     style,
-//     animate,
-//     transition
-//   } from '@angular/animations';
 
-// import { AccountService, AlertService } from '@app/_services';
-// import { LoginReqModel } from '@app/_models/_requestModels';
-// import { MatDialog } from '@angular/material/dialog';
-// import { FaceAuthComponent } from '@app/_components/face-auth/face-auth.component';
 
 @Component({
   selector: 'app-sign-in',
@@ -44,7 +33,6 @@ export class SignInComponent implements OnInit {
     loading = false;
     hide = true;
     isOpen = true;
-    
 
     constructor(
         private formBuilder: FormBuilder,
@@ -82,7 +70,9 @@ export class SignInComponent implements OnInit {
             .pipe(first())
             .subscribe({
                 next: () => {
-                    let dialogRef = this.dialog.open(FaceAuthComponent);
+                    let dialogRef = this.dialog.open(FaceAuthComponent,{
+                        panelClass: 'face-modal'
+                    });
                     this.loading = false;
                 },
                 error: error => {

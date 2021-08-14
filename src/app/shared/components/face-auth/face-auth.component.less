@@ -9,7 +9,6 @@
     object-fit:none;
     z-index: 0!important;
     opacity:1;
-    //clip-path: ellipse(27% 40% at 50% 5em);
     width:500px;
     height:560px;
     border-radius: 25px;
@@ -27,7 +26,6 @@
     border-radius:45%;
     border:2px solid black;
     z-index: 3!important;
-    //display:none;
     object-fit:none;
 
 }
@@ -40,46 +38,15 @@
     text-align: center;
     object-fit:none;
     background-color: black;
-    opacity:0.9;
+    opacity:0.8;
     z-index: 1!important;
     width:500px;
-    border-radius: 25px;
+    border-radius: 5px;
     height:560px;
-    object-fit:none;
 }
 
-
-#videoCenter{
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top : 10em;
-    left: 0;
-    right: 0;
-    text-align: center;
-    overflow:hidden;
-    display:block;
-    border-radius:45%;
-    border:2px solid black;
-    z-index: 4!important;
-    display:none;
-    object-fit:none;
- }
 #cropCvs{   
     display:none;
-}
-
-.PictureCountdown{
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 6.2em;
-    text-align: center;
-    display:block;
-    z-index: 10!important;
-    font-weight: 200;
-    font-size: 70px;
-    color:white;
 }
 
 .indication{
@@ -107,4 +74,53 @@
   #faceDiv{
       height:560px;
       width: 500px;
+      padding:0em 2em;
+      background-color: black !important;
+  }
+
+  .utilsDiv{
+      padding:2em 2em!important;
+  }
+  
+  .photo-button {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30em;
+    z-index: 5!important;
+  }
+  .circle {
+    position: absolute;
+    top: 12%;
+    left: 12%;
+    bottom: 12%;
+    right: 12%;
+    border-radius: 100%;
+    background-color: #ffffff;
+    opacity: 0;
+  }
+  .ring {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    
+    border-radius: 100%;
+    border: 0.5em solid #ffffff;
+    opacity: 0.8;
+  }
+  .photo-button .circle, .photo-button .ring {
+    transition: all 0.25s;
+  }
+  .photo-button:hover .circle {
+    opacity: 1;
+  }
+  .photo-button:active .ring {
+    opacity: 1;
+  }
+  .photo-button:active .circle {
+    opacity: 0.5;
   }

@@ -8,7 +8,7 @@ import { SessionService } from './session.service';
 import { HttpOptions } from '@app/shared/constants';
 import { SuccessfulExternalLoginRespModel, SuccessfulLoginFirstStepRespModel, SuccessfulLoginRespModel, SuccessfulRegisterRespModel } from '@app/shared/models/responseModels';
 import { ClientsApiErrorCodes } from '../enums';
-import { ExternalLoginReqModel, LoginFacialReqModel, LoginReqModel, RegisterReqModel } from '@app/shared/models/requestModels';
+import { ExternalLoginAuthTokenReqModel, ExternalLoginReqModel, LoginFacialReqModel, LoginReqModel, RegisterReqModel } from '@app/shared/models/requestModels';
 
 @Injectable({
   providedIn: 'root'
@@ -46,6 +46,10 @@ export class ApiService {
 
   public ExternalFacialAuthentication(facialRecoUser : LoginFacialReqModel){
     return this.http.post<HttpResponseData<SuccessfulExternalLoginRespModel , ClientsApiErrorCodes>>(`${environment.apiUrl}/accounts/oauth2/external/facial/authentication`,facialRecoUser, this.httpOptions)
+  }
+
+  public ExternalAuthTokenSignIn(existingUser : ExternalLoginAuthTokenReqModel){
+    return this.http.post<HttpResponseData<SuccessfulExternalLoginRespModel , ClientsApiErrorCodes>>(`${environment.apiUrl}/accounts/oauth2/external/external/sign-in/auth/token`,existingUser, this.httpOptions)
   }
 
 }

@@ -18,46 +18,21 @@ import { LoginFacialReqModel } from '@app/shared/models/requestModels';
 })
 export class FaceAuthComponent implements OnInit,AfterViewInit {
  
-  @ViewChild("canvasScreenshot")
-  public canvasScreenshot: ElementRef;
-  
-
-  public video :any;
-  
-  public capture: any;
+  video :any;
   video2: any;
   canvas: any;
+  capture: any;
   stream: any;
-  canvas2: any;
   image:any;
-  lol:any;
-  lol2:any;
-  pass: boolean;
-  num: number;
-  displaySize: { width: any; height: any; };
-  public video3: any;
-  @ViewChild('cd', { static: false }) private countdown: CountdownComponent;
-  countdownVisibility: { 'visibility' : string};
-  timerVisible: boolean = false;
-  foundFaceStatus = 0;
-  videoId = 'outerVideo';
-  scaleFactor = 0.25;
-  snapshot : any;
-  spinerVisible : boolean;
-  findFaceTimeout: NodeJS.Timeout;
-  stopTracking: boolean;
-  detections: any;
+  spinerVisible: boolean;
   isLogged : boolean = false; 
   result: faceapi.WithFaceDescriptor<faceapi.WithFaceExpressions<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection; }, faceapi.FaceLandmarks68>>>;
-
 
   constructor(private authService: AuthService,
     private sessionService : SessionService,
     private _snackBar: MatSnackBar,
-    private route: ActivatedRoute,
     private router: Router,
     private alertService: AlertService) { 
-      
   }
 
   public ngOnInit() {   
@@ -66,15 +41,11 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
     this.sessionService.isLoggedIn().subscribe(loggedIn => {
         this.isLogged = loggedIn;
     })
-    this.stopTracking = false;
     this.video = document.getElementById('outerVideo');   
-    this.video2 = document.getElementById('videoCenter');
-    this.video3 = document.getElementById('innerVideo');
-    this.setCountdownStyles();
+    this.video2 = document.getElementById('innerVideo');
   }
 
   async ngAfterViewInit(){
-    this.pass = false;
     if(this.isLogged == false){
       await faceapi.nets.ssdMobilenetv1.loadFromUri('/assets/faceModels');
       await faceapi.nets.faceLandmark68Net.loadFromUri('/assets/faceModels');
@@ -88,92 +59,43 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
     }
   }
   
-  setCountdownStyles() {
-    this.countdownVisibility = {
-      'visibility':  this.timerVisible ? 'visible' : 'hidden'
-    };
-  }
   public startVideo() {
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-          this.canvas = document.getElementById('cropCvs');
-          this.video2.srcObject = this.canvas.captureStream(25);
-          this.canvas2 = document.getElementById("faceCanvas");
-          this.displaySize = { width: this.video2.width, height: this.video2.height }
-          faceapi.matchDimensions(this.canvas2, this.displaySize)
+          $('#faceDiv').removeClass('hidden');
+          this.canvas = document.getElementById("cropCvs");
           this.video.srcObject = stream;
-          this.video3.srcObject = stream;
-          this.pass = true;
-          this.createFaceCanvas();
-
+          this.video2.srcObject = stream;
+          this.spinerVisible = false;
+          setInterval(()=>{
+            let ctx = this.canvas.getContext('2d');
+            ctx.drawImage(this.video, ((this.video.videoWidth -  this.canvas.width) / 2), ((this.video.videoHeight -  this.canvas.height) / 2), this.canvas.width, this.canvas.height, 0, 0, this.canvas.width,this.canvas.height);  
+          }, 100)
       });
     }
   }
 
-  public createFaceCanvas() {
+  takePicture(){
+    this.capture = this.canvas.toDataURL('image/jpeg');
+    $('#screenshot').attr("src",this.capture);
+    $('#imageOutput').attr("src",this.capture);
+    $('#faceDiv').addClass('hidden');
+    $('#imageOutput').removeClass('hidden');
 
-    if(this.spinerVisible == true && this.stopTracking == false){
-      $('#faceDiv').removeClass('hidden');
-      this.spinerVisible = false;
-    }
+    $('.flash')
+    .show()  //show the hidden div
+    .animate({opacity: 0.5}, 700) 
+    .fadeOut(300)
+    .css({'opacity': 1});
+    var that = this;
 
-    let ctx = this.canvas.getContext('2d');
-    ctx.drawImage(this.video, ((this.video.videoWidth -  this.canvas.width) / 2), ((this.video.videoHeight -  this.canvas.height) / 2), this.canvas.width, this.canvas.height, 0, 0, this.canvas.width,this.canvas.height);
-
-    if(this.pass == true){
-    
-      this.detections = faceapi.detectAllFaces(this.video2, new faceapi.TinyFaceDetectorOptions({scoreThreshold: 0.5}));
-      console.log('face captured');
-      let resizedDetections = faceapi.resizeResults(this.detections, this.displaySize);
-      this.canvas2.getContext('2d').clearRect(0, 0, this.canvas2.width, this.canvas2.height);
-      //faceapi.draw.drawDetections(this.canvas2, resizedDetections);
-    } 
-
-    if(this.detections != null && this.detections.length > 0){
-      if(this.countdown.left == 4000){
-        this.countdown.begin();
-        this.stopTracking = true;
-        this.pass = false;
-        console.log("began");
-        this.timerVisible = true;
-        this.setCountdownStyles()
-      }
-
-    }
-    
-    if(this.stopTracking == false){
-      let self = this;
-      this.findFaceTimeout = setTimeout(function() {
-        self.createFaceCanvas();
-      }, 1000/60);
-    }
-  }
-
-  onTimerFinished(e: CountdownEvent){
-    if (e.action == 'done') {
-      this.timerVisible = false;
-      this.setCountdownStyles();
-      var context = this.canvasScreenshot.nativeElement.getContext("2d").drawImage(this.video,0,0,this.video.height,this.video.width);
-      this.capture = this.canvasScreenshot.nativeElement.toDataURL('image/jpeg');
-      $('#screenshot').attr("src",this.capture);
-      $('#faceDiv').addClass('hidden');
-      $('#screenshot').removeClass('hidden');
-
-      $('.flash')
-      .show()  //show the hidden div
-      .animate({opacity: 0.5}, 700) 
-      .fadeOut(300)
-      .css({'opacity': 1});
-      var that = this;
-
+    setTimeout(() => {
+      $('#imageOutput').addClass('hidden');
+      that.spinerVisible = true;
       setTimeout(() => {
-        $('#screenshot').addClass('hidden');
-        that.spinerVisible = true;
-        setTimeout(() => {
-          that.captureFace();
-        }, 1000);
-      },2000)
-    }
+        that.captureFace();
+      }, 1000);
+    },3000)
   }
 
   captureFace() {
@@ -190,14 +112,9 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
           duration : 3000,
           panelClass: ['failure-snackbar']
         });
-        this.countdown.restart(); 
         this.result = null;
-        this.detections = null;
-        this.stopTracking = false;
-        this.createFaceCanvas();      
-        setTimeout(() => {
-          this.pass = true; 
-        }, 1000);
+        this.capture = null;
+        this.startVideo();
         
       }
       else if(this.result == null || this.result == undefined){
@@ -205,15 +122,9 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
           duration : 3000,
           panelClass: ['failure-snackbar']
         });
-        this.countdown.restart(); 
         this.result = null;
-        this.detections = null;
-        this.stopTracking = false;
-        this.createFaceCanvas();      
-        setTimeout(() => {
-          this.pass = true; 
-        }, 1000); 
-
+        this.capture = null;
+        this.startVideo();
       }
     });
   }
@@ -232,14 +143,14 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
     .subscribe({
         next: () => {
           this.alertService.successAlert('Login successful');
-          this.detections = null;
           this.result = null;
+          this.capture = null;
           this.router.navigate(['/account']);
         },
         error: error => {
             console.log(error);
-            this.detections = null;
             this.result = null;
+            this.capture = null;
             this.router.navigate(['/']);
           }
     });
