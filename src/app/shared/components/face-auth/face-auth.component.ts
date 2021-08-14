@@ -93,36 +93,37 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
       'visibility':  this.timerVisible ? 'visible' : 'hidden'
     };
   }
-  public startVideo() {
+  public async startVideo() {
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
-          this.canvas = document.getElementById('cropCvs');
+      navigator.mediaDevices.getUserMedia({ video: true }).then( async stream => {
+          this.video.srcObject = stream;
+          this.video3.srcObject = stream;
+          this.createFaceCanvas();
           this.video2.srcObject = this.canvas.captureStream(25);
           this.canvas2 = document.getElementById("faceCanvas");
           this.displaySize = { width: this.video2.width, height: this.video2.height }
           faceapi.matchDimensions(this.canvas2, this.displaySize)
-          this.video.srcObject = stream;
-          this.video3.srcObject = stream;
+          await new Promise(f => setTimeout(f, 100));
           this.pass = true;
-          this.createFaceCanvas();
-
       });
     }
+    
   }
 
-  public createFaceCanvas() {
+  public async createFaceCanvas() {
 
     if(this.spinerVisible == true && this.stopTracking == false){
       $('#faceDiv').removeClass('hidden');
       this.spinerVisible = false;
     }
 
+    this.canvas = document.getElementById('cropCvs');
     let ctx = this.canvas.getContext('2d');
     ctx.drawImage(this.video, ((this.video.videoWidth -  this.canvas.width) / 2), ((this.video.videoHeight -  this.canvas.height) / 2), this.canvas.width, this.canvas.height, 0, 0, this.canvas.width,this.canvas.height);
 
     if(this.pass == true){
     
-      this.detections = faceapi.detectAllFaces(this.video2, new faceapi.TinyFaceDetectorOptions({scoreThreshold: 0.5}));
+      this.detections = await faceapi.detectAllFaces(this.video2, new faceapi.TinyFaceDetectorOptions({scoreThreshold: 0.5}));
       console.log('face captured');
       let resizedDetections = faceapi.resizeResults(this.detections, this.displaySize);
       this.canvas2.getContext('2d').clearRect(0, 0, this.canvas2.width, this.canvas2.height);
