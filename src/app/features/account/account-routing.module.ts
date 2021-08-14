@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ConnectedAppsComponent } from './components/connected-apps/connected-apps.component';
 import { HomeComponent } from './components/home/home.component';
+import { MyAppsComponent } from './components/my-apps/my-apps.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 
 const routes: Routes = [
@@ -11,7 +13,15 @@ const routes: Routes = [
       { 
         path: 'user-details',
         component: UserDetailsComponent,
-      }
+      },
+      { 
+        path: 'connected-apps',
+        component: ConnectedAppsComponent,
+      },
+      { 
+        path: 'my-apps',
+        component: MyAppsComponent,
+      }    
     ] 
   }
 ];

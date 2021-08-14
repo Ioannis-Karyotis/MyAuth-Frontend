@@ -47,6 +47,7 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
   findFaceTimeout: NodeJS.Timeout;
   stopTracking: boolean;
   detections: any;
+  isLogged : boolean = false; 
   result: faceapi.WithFaceDescriptor<faceapi.WithFaceExpressions<faceapi.WithFaceLandmarks<{ detection: faceapi.FaceDetection; }, faceapi.FaceLandmarks68>>>;
 
 
@@ -55,23 +56,36 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
     private _snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router,
-    private alertService: AlertService
-    ) { }
+    private alertService: AlertService) { 
+      
+  }
 
-  public ngOnInit() { 
+  public ngOnInit() {   
     $('.flash').hide(); 
     this.spinerVisible = true; 
+    this.sessionService.isLoggedIn().subscribe(loggedIn => {
+        this.isLogged = loggedIn;
+    })
     this.stopTracking = false;
     this.video = document.getElementById('outerVideo');   
     this.video2 = document.getElementById('videoCenter');
     this.video3 = document.getElementById('innerVideo');
     this.setCountdownStyles();
-    
   }
 
   async ngAfterViewInit(){
     this.pass = false;
-    this.startVideo();
+    if(this.isLogged == false){
+      await faceapi.nets.ssdMobilenetv1.loadFromUri('/assets/faceModels');
+      await faceapi.nets.faceLandmark68Net.loadFromUri('/assets/faceModels');
+      await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/faceModels');
+      await faceapi.nets.faceExpressionNet.loadFromUri('/assets/faceModels');
+      faceapi.loadTinyFaceDetectorModel('/assets/faceModels').then(() =>{
+        this.startVideo();
+      });
+    }else{
+      this.startVideo();
+    }
   }
   
   setCountdownStyles() {
@@ -79,37 +93,36 @@ export class FaceAuthComponent implements OnInit,AfterViewInit {
       'visibility':  this.timerVisible ? 'visible' : 'hidden'
     };
   }
-  public async startVideo() {
+  public startVideo() {
     if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      navigator.mediaDevices.getUserMedia({ video: true }).then( async stream => {
-          this.video.srcObject = stream;
-          this.video3.srcObject = stream;
-          this.createFaceCanvas();
+      navigator.mediaDevices.getUserMedia({ video: true }).then(stream => {
+          this.canvas = document.getElementById('cropCvs');
           this.video2.srcObject = this.canvas.captureStream(25);
           this.canvas2 = document.getElementById("faceCanvas");
           this.displaySize = { width: this.video2.width, height: this.video2.height }
           faceapi.matchDimensions(this.canvas2, this.displaySize)
-          await new Promise(f => setTimeout(f, 100));
+          this.video.srcObject = stream;
+          this.video3.srcObject = stream;
           this.pass = true;
+          this.createFaceCanvas();
+
       });
     }
-    
   }
 
-  public async createFaceCanvas() {
+  public createFaceCanvas() {
 
     if(this.spinerVisible == true && this.stopTracking == false){
       $('#faceDiv').removeClass('hidden');
       this.spinerVisible = false;
     }
 
-    this.canvas = document.getElementById('cropCvs');
     let ctx = this.canvas.getContext('2d');
     ctx.drawImage(this.video, ((this.video.videoWidth -  this.canvas.width) / 2), ((this.video.videoHeight -  this.canvas.height) / 2), this.canvas.width, this.canvas.height, 0, 0, this.canvas.width,this.canvas.height);
 
     if(this.pass == true){
     
-      this.detections = await faceapi.detectAllFaces(this.video2, new faceapi.TinyFaceDetectorOptions({scoreThreshold: 0.5}));
+      this.detections = faceapi.detectAllFaces(this.video2, new faceapi.TinyFaceDetectorOptions({scoreThreshold: 0.5}));
       console.log('face captured');
       let resizedDetections = faceapi.resizeResults(this.detections, this.displaySize);
       this.canvas2.getContext('2d').clearRect(0, 0, this.canvas2.width, this.canvas2.height);

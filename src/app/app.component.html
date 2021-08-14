@@ -5,10 +5,8 @@
 <!-- <div class="app-container" fxLayout="column" fxLayoutAlign="stretch center"> -->
     <mat-toolbar color="primary" class="app-header">
         <span><img id='back' src="./../assets/MyAuthLogo.png" class="logo"></span>
-        <span class="nav-tool-items">
-          <!-- <a mat-button routerLink="login" routerLinkActive="active">Log in</a> -->
-          <!-- <a mat-button mat-raised-button routerLink="register" routerLinkActive="active">Register</a> -->
-        </span>
+        <span *ngIf="isLoggedIn == true" class="nav-tool-items">Welcome... {{user.email}}</span>
+        <button *ngIf="isLoggedIn == true" mat-button class="logout-button" (click)="logout()">Logout</button>
     </mat-toolbar>
     <router-outlet></router-outlet>
     <app-loader></app-loader>

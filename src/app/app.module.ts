@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CommonModule, registerLocaleData } from '@angular/common';
 import localeEn from '@angular/common/locales/en';
 import { SharedModule } from '@app/shared/shared.module';
+import { SessionService } from './shared/services';
 
 registerLocaleData(localeEn , 'en');
 
@@ -46,7 +47,7 @@ registerLocaleData(localeEn , 'en');
     bootstrap: [AppComponent],
     schemas : [CUSTOM_ELEMENTS_SCHEMA],
     providers : [
-        {provide: APP_INITIALIZER, useFactory: loadRemoteEnv, multi: true}
+        {provide: APP_INITIALIZER, useFactory: loadRemoteEnv,deps: [SessionService], multi: true}
     ]
 })
 
@@ -57,16 +58,34 @@ export function HttpLoaderFactory(http: HttpClient): any {
     return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
 
-export function loadRemoteEnv() {
+export function loadRemoteEnv(sessionService: SessionService) {
     return () => {
-        return new Promise<void>( (resolve) => {
+        return new Promise<void>((resolve) => {
+            sessionService.isLoggedIn().subscribe(async loggedIn => {
+                if(loggedIn == true) {
+                    resolve();
+                }else{
+                    await faceapi.nets.ssdMobilenetv1.loadFromUri('/assets/faceModels');
+                    await faceapi.nets.faceLandmark68Net.loadFromUri('/assets/faceModels');
+                    await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/faceModels');
+                    await faceapi.nets.faceExpressionNet.loadFromUri('/assets/faceModels');
+                    await faceapi.loadTinyFaceDetectorModel('/assets/faceModels');
+                    let base_image = new Image();
+                    base_image.src = "/assets/startFaceDetect.png";
+                    base_image.onload = function() {
+                        const fullFaceDescription = faceapi
+                        .detectSingleFace(base_image)
+                        .withFaceLandmarks()
+                        .withFaceExpressions()
+                        .withFaceDescriptor()
+                        .run()
+                        .then(res => {
+                            resolve();
+                        });
+                    };
+                }
+            });
             
-            faceapi.nets.ssdMobilenetv1.loadFromUri('/assets/faceModels');
-            faceapi.nets.faceLandmark68Net.loadFromUri('/assets/faceModels');
-            faceapi.nets.faceRecognitionNet.loadFromUri('/assets/faceModels');
-            faceapi.nets.faceExpressionNet.loadFromUri('/assets/faceModels');
-            faceapi.loadTinyFaceDetectorModel('/assets/faceModels');
-            resolve();
         })
     }
 }

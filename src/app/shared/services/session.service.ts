@@ -9,16 +9,32 @@ import { Router } from '@angular/router';
 export class SessionService {
 
   private userInfoSubject = new BehaviorSubject<UserInfo>(null);
-  private isLoggedInSubject = new BehaviorSubject<boolean>(null);
+  private isLoggedInSubject = new BehaviorSubject<boolean>(false);
 
-  constructor(private router : Router) {
-      if(localStorage.getItem('authToken')){
-        this.setExistingSession()
-      }else{
-        this.setInitSession();
-      }
+  get AuthStatus(): boolean {
+    return this.isLoggedInSubject.value;
   }
 
+  isLoggedIn() : Observable<boolean> {
+    return this.isLoggedInSubject.asObservable();
+  }
+
+  get UserInfo(): UserInfo {
+    return this.userInfoSubject.value;
+  }
+
+  getUserInfo(): Observable<UserInfo> {
+    return this.userInfoSubject.asObservable();
+  }
+
+
+  constructor(private router : Router) {
+    if(localStorage.getItem('authToken')){
+      this.setExistingSession()
+    }else{
+      this.setInitSession();
+    }
+  }
 
   private setExistingSession(){
 
@@ -28,10 +44,9 @@ export class SessionService {
       userToken :existingSession.userToken,
       x_seq :existingSession.x_seq,
       email : existingSession.email,
-      isAuthenticated : existingSession.isAuthenticated,
     });
         
-    if(this.UserInfo.isAuthenticated){
+    if(this.UserInfo.userToken != null){
       this.isLoggedInSubject.next(true);
     }
 
@@ -43,45 +58,22 @@ export class SessionService {
     const newSessionInfo = new UserInfo(
       null,
       null,
-      null,
-      false,
+      null
     )
 
     this.userInfoSubject.next({
       userToken :newSessionInfo.userToken,
       x_seq :newSessionInfo.x_seq,
-      email : newSessionInfo.email,
-      isAuthenticated : newSessionInfo.isAuthenticated
+      email : newSessionInfo.email
     });
 
     localStorage.setItem('authToken', JSON.stringify(newSessionInfo));
-  }
-
-
-  public changeSessionDetails(fisrtName : string, lastName : string){
-
-    const existingSession = JSON.parse(localStorage.getItem('authToken'))
-
-    existingSession.firstName = fisrtName;
-    existingSession.lastName = lastName;
-    this.userInfoSubject.next(existingSession);
-        
-    if(this.UserInfo.isAuthenticated){
-      this.isLoggedInSubject.next(true);
-    }
-
-    localStorage.setItem('authToken', JSON.stringify(existingSession));
-  }
-
-  get UserInfo(): UserInfo {
-      return this.userInfoSubject.value;
   }
 
   public setUserInfo(userInfo: UserInfo) {
 
     const session = this.UserInfo
 
-    session.isAuthenticated = userInfo.isAuthenticated
     session.email = userInfo.email;
     session.userToken = userInfo.userToken;
     session.x_seq = userInfo.x_seq;
@@ -89,31 +81,22 @@ export class SessionService {
     this.userInfoSubject.next(session);
     localStorage.setItem('authToken', JSON.stringify(session));
     
-    if(userInfo.isAuthenticated){
+    if(userInfo.userToken != null){
       this.isLoggedInSubject.next(true);
     }
     
   }
 
-  isLoggedIn() : Observable<boolean> {
-    return this.isLoggedInSubject.asObservable();
-  }
-
-  getUserInfo(): Observable<UserInfo> {
-    return this.userInfoSubject.asObservable();
-  }
-
   public logout() {
 
     const session = this.UserInfo
-    session.isAuthenticated = null;
     session.email = null;
     session.userToken = null;
     session.x_seq = null;
     localStorage.setItem('authToken', JSON.stringify(session));
 
     this.userInfoSubject.next(session);
-    this.isLoggedInSubject.next(null)
+    this.isLoggedInSubject.next(false)
 
     this.router.navigate(['/account/login']);
 

@@ -9,10 +9,12 @@ import { MaterialModule } from '@app/shared/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TranslateModule } from '@ngx-translate/core';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { ConnectedAppsComponent } from './components/connected-apps/connected-apps.component';
+import { MyAppsComponent } from './components/my-apps/my-apps.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, UserDetailsComponent],
+  declarations: [HomeComponent, UserDetailsComponent, ConnectedAppsComponent, MyAppsComponent],
   imports: [
     CommonModule,
     AccountRoutingModule,

@@ -23,10 +23,6 @@ export class AuthService {
     private sessionService : SessionService
   ) { }
 
-  public get UserInfo(): UserInfo {
-    return this.userInfoSubject.value;
-  }
-
   SignUp(newUser: RegisterReqModel){
     return this.apiService.SignUp(newUser)
     .pipe(
@@ -55,6 +51,7 @@ export class AuthService {
         let info = this.sessionService.UserInfo;
 
         info.userToken = successLogin.data.authToken;
+        info.email = successLogin.data.email;
         info.x_seq = null;
 
         localStorage.setItem('authToken', JSON.stringify(info));
@@ -99,6 +96,7 @@ export class AuthService {
         let info = this.sessionService.UserInfo;
 
         info.userToken = successLogin.data.authToken;
+        info.email = successLogin.data.email;
         info.x_seq = null;
 
         localStorage.setItem('authToken', JSON.stringify(info));

@@ -9,7 +9,8 @@ import { MatDialog } from '@angular/material/dialog';
 @Component(
 { 
     selector: 'app', 
-    templateUrl: 'app.component.html'
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.less']
 })
 export class AppComponent{
     isLoggedIn: boolean;
@@ -21,10 +22,12 @@ export class AppComponent{
         public dialog: MatDialog
       ){
         translate.use('en');
-        this.sessionService.isLoggedIn().subscribe(x => this.isLoggedIn = x);
-        this.sessionService.getUserInfo().subscribe(info => 
+        this.sessionService.isLoggedIn().subscribe(x => {
+          this.isLoggedIn = x
+        });
+        this.sessionService.getUserInfo().subscribe(info => {
           this.user = info
-        );
+        });
     }
 
     logout() {

@@ -1,7 +1,7 @@
 export class SuccessfulLoginRespModel {
     authToken: string
     x_Seq : string
-    id: string
+    email: string
     dateCreated : Date
     dateExpired : Date
 }

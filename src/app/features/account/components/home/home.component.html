@@ -1,14 +1,14 @@
 <div class="home-container" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column" fxFlex="100">
-    <div class="side-menu" fxLayout="column" fxLayout.sm="row" fxLayout.xs="row" fxFlexOrder="1" fxFlexOrder.sm="2" fxFlexOrder.xs="2" fxFlex="10" fxFlex.xs="10">
-        <div class="side-menu-button" fxFlex="33.3">
+    <div class="side-menu" fxLayout="column" fxLayout.sm="row" fxLayout.xs="row" fxFlexOrder="1" fxFlexOrder.sm="2" fxFlexOrder.xs="2" fxFlex="10"  fxFlex.sm="15" fxFlex.xs="20">
+        <a routerLink="/account/user-details" class="side-menu-button" fxFlex="33.3">
             <mat-icon class="side-menu-icon">account_box</mat-icon>
-        </div>
-        <div class="side-menu-button" fxFlex="33.3">
+        </a>
+        <a  routerLink="/account/connected-apps" class="side-menu-button" fxFlex="33.3">
             <mat-icon class="side-menu-icon">info</mat-icon>
-        </div>
-        <div class="side-menu-button" fxFlex="33.3">
+        </a>
+        <a routerLink="/account/my-apps" class="side-menu-button" fxFlex="33.3">
             <mat-icon class="side-menu-icon">code</mat-icon>
-        </div>
+        </a>
         
     </div>
     <div class="main-content" fxFlexOrder="2" fxFlexOrder.sm="1" fxFlexOrder.xs="1" fxFlex="90" fxFlex.xs="90" >
