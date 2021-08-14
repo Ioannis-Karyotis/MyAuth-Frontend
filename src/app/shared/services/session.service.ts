@@ -27,9 +27,6 @@ export class SessionService {
     this.userInfoSubject.next({
       userToken :existingSession.userToken,
       x_seq :existingSession.x_seq,
-      id : existingSession.id,
-      firstName : existingSession.firstName,
-      lastName : existingSession.lastName,
       email : existingSession.email,
       isAuthenticated : existingSession.isAuthenticated,
     });
@@ -47,18 +44,12 @@ export class SessionService {
       null,
       null,
       null,
-      null,
-      null,
-      null,
       false,
     )
 
     this.userInfoSubject.next({
       userToken :newSessionInfo.userToken,
       x_seq :newSessionInfo.x_seq,
-      id : newSessionInfo.id,
-      firstName : newSessionInfo.firstName,
-      lastName : newSessionInfo.lastName,
       email : newSessionInfo.email,
       isAuthenticated : newSessionInfo.isAuthenticated
     });
@@ -90,9 +81,6 @@ export class SessionService {
 
     const session = this.UserInfo
 
-    session.firstName = userInfo.firstName
-    session.lastName = userInfo.lastName
-    session.id = userInfo.id
     session.isAuthenticated = userInfo.isAuthenticated
     session.email = userInfo.email;
     session.userToken = userInfo.userToken;
@@ -118,9 +106,6 @@ export class SessionService {
   public logout() {
 
     const session = this.UserInfo
-    session.firstName = null;
-    session.lastName = null;
-    session.id = null;
     session.isAuthenticated = null;
     session.email = null;
     session.userToken = null;

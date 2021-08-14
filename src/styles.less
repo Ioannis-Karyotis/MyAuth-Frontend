@@ -1,7 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 a { cursor: pointer }
 
-html,
+html{
+  width: 100vw;
+  height: 100vh;
+}
 
 body {
   margin: 0;
@@ -12,6 +15,8 @@ body {
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  width: 100vw;
+  height: 100vh;
 }
 
 .app-header {
@@ -21,7 +26,6 @@ body {
   left: 0;
   right: 0;
   z-index: 2;
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
   height: 4.5em !important;
 }
 
@@ -32,8 +36,9 @@ body {
 }
 
 .outlet{
-  // min-width: 100vh;
-  min-height: 100vh;
+  display:flex;
+  flex-direction:column;
+  height:100%;
 }
 
 .box {
@@ -70,7 +75,6 @@ body {
   z-index: -1;
 }
 
-
 .warn {
   color: #CB0F0F;
 }
@@ -106,6 +110,7 @@ canvas {
   border:2px solid black;
   object-fit: none;
 }
+
 #cropCvs{
   z-index: 5!important  ;
 }

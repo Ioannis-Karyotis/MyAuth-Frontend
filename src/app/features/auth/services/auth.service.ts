@@ -35,7 +35,6 @@ export class AuthService {
 
         info.userToken = successSignUp.data.authToken;
         info.x_seq = null;
-        info.id = successSignUp.data.id;
 
         this.sessionService.setUserInfo(info);
         this.dialog.closeAll();
@@ -57,7 +56,6 @@ export class AuthService {
 
         info.userToken = successLogin.data.authToken;
         info.x_seq = null;
-        info.id = successLogin.data.id;
 
         localStorage.setItem('authToken', JSON.stringify(info));
         this.sessionService.setUserInfo(info);
@@ -79,7 +77,6 @@ export class AuthService {
         if(successLogin.success == true){
           let info = this.sessionService.UserInfo
 
-          info.id = successLogin.data.id
           info.x_seq = successLogin.data.x_seq
 
           this.sessionService.setUserInfo(info);
@@ -103,7 +100,6 @@ export class AuthService {
 
         info.userToken = successLogin.data.authToken;
         info.x_seq = null;
-        info.id = successLogin.data.id;
 
         localStorage.setItem('authToken', JSON.stringify(info));
         this.sessionService.setUserInfo(info);

@@ -1,68 +1,70 @@
-<mat-card *ngIf="isOpen" [@inOutAnimation] class="box" color="primary" fxLayout="column" fxLayoutGap="20px" fxFlex="100" fxFlex.xs="100">
-    <mat-card-header fxLayoutAlign="center center">
-        <mat-card-title>Sign up</mat-card-title>
-    </mat-card-header>
-    <mat-card-content >
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="example-form" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="50px">
-            <div  fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px">
+<div fxLayout="row" fxLayoutAlign="center center" class="outlet" >
+    <mat-card *ngIf="isOpen" [@inOutAnimation] class="box" color="primary" fxLayout="column" fxLayoutGap="20px" fxFlex="30" fxFlex.sm="100" fxFlex.xs="100">
+        <mat-card-header fxLayoutAlign="center center">
+            <mat-card-title>Sign up</mat-card-title>
+        </mat-card-header>
+        <mat-card-content >
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="example-form" fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="50px">
+                <div  fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="40px">
 
-                <mat-form-field  class="basic-input" color="primary" appearance="outline">
-                    <mat-label color="primary">Name</mat-label>
-                    <input color="primary" matInput formControlName="name" placeholder="Name">
-                    <mat-error *ngIf="f.name.errors">{{getNameErrorMessage()}}</mat-error>
-                </mat-form-field>
+                    <mat-form-field  class="basic-input" color="primary" appearance="outline">
+                        <mat-label color="primary">Name</mat-label>
+                        <input color="primary" matInput formControlName="name" placeholder="Name">
+                        <mat-error *ngIf="f.name.errors">{{getNameErrorMessage()}}</mat-error>
+                    </mat-form-field>
 
-                <mat-form-field class="basic-input" color="primary" appearance="outline">
-                    <mat-label color="primary">Surname</mat-label>
-                    <input color="primary" matInput formControlName="surname" placeholder="Surname">
-                    <mat-error *ngIf="f.surname.errors">{{getSurnameErrorMessage()}}</mat-error>
-                </mat-form-field>
+                    <mat-form-field class="basic-input" color="primary" appearance="outline">
+                        <mat-label color="primary">Surname</mat-label>
+                        <input color="primary" matInput formControlName="surname" placeholder="Surname">
+                        <mat-error *ngIf="f.surname.errors">{{getSurnameErrorMessage()}}</mat-error>
+                    </mat-form-field>
 
-                <mat-form-field class="basic-input" color="primary" appearance="outline">
-                    <mat-label color="primary">Email</mat-label>
-                    <input color="primary" matInput formControlName="email" type="email" placeholder="Email">
-                    <mat-error *ngIf="f.email.errors">{{getEmailErrorMessage()}}</mat-error>
-                </mat-form-field>
+                    <mat-form-field class="basic-input" color="primary" appearance="outline">
+                        <mat-label color="primary">Email</mat-label>
+                        <input color="primary" matInput formControlName="email" type="email" placeholder="Email">
+                        <mat-error *ngIf="f.email.errors">{{getEmailErrorMessage()}}</mat-error>
+                    </mat-form-field>
 
-                <mat-form-field class="basic-input" color="primary" appearance="outline">
-                    <mat-label color="primary">Password</mat-label>
-                    <input color="primary"  matInput [type]="hide ? 'password' : 'text'" minlength="6" formControlName="password" placeholder="Password">
-                    <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" style="position:absolute; right:0; bottom:-5px;">
-                        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
-                    <mat-error *ngIf="f.password.errors">{{getPasswordErrorMessage()}}</mat-error>
-                    
-                </mat-form-field>
-
-                <mat-form-field class="basic-input" color="primary" appearance="outline" minlength="6">
-                    <mat-label color="primary">Confirm Password</mat-label>
-                    <input color="primary"  matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmPassword" minlength="6" placeholder="Confirm Password">
-                    <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2" style="position:absolute; right:0; bottom:-5px;">
-                        <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
-                    </button>
-                    <mat-error *ngIf="f.confirmPassword.errors">{{getConfirmPasswordErrorMessage()}}</mat-error>
-                    
-                </mat-form-field>
-            </div>
-            
-            
-            <div fxLayout="row" fxLayoutAlign="center center">
-                <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">   
-                    <div *ngIf="t.errors?.passwordsMatchValidator" class="warn">
-                        Passwords do not match with each other
-                    </div>
-                    <div>
-                        <button type="submit" [disabled]="loading" mat-stroked-button>
-                            <span *ngIf="loading"></span>
-                            Register
+                    <mat-form-field class="basic-input" color="primary" appearance="outline">
+                        <mat-label color="primary">Password</mat-label>
+                        <input color="primary"  matInput [type]="hide ? 'password' : 'text'" minlength="6" formControlName="password" placeholder="Password">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" style="position:absolute; right:0; bottom:-5px;">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
                         </button>
-                        <a routerLink="../sign-in"  mat-button>Login</a>
-                    </div>
-                    <div *ngIf="t.invalid && loading == true" class="warn">
-                        Please fill the form correctly
+                        <mat-error *ngIf="f.password.errors">{{getPasswordErrorMessage()}}</mat-error>
+                        
+                    </mat-form-field>
+
+                    <mat-form-field class="basic-input" color="primary" appearance="outline" minlength="6">
+                        <mat-label color="primary">Confirm Password</mat-label>
+                        <input color="primary"  matInput [type]="hide2 ? 'password' : 'text'" formControlName="confirmPassword" minlength="6" placeholder="Confirm Password">
+                        <button mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide2" style="position:absolute; right:0; bottom:-5px;">
+                            <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error *ngIf="f.confirmPassword.errors">{{getConfirmPasswordErrorMessage()}}</mat-error>
+                        
+                    </mat-form-field>
+                </div>
+                
+                
+                <div fxLayout="row" fxLayoutAlign="center center">
+                    <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">   
+                        <div *ngIf="t.errors?.passwordsMatchValidator" class="warn">
+                            Passwords do not match with each other
+                        </div>
+                        <div>
+                            <button type="submit" [disabled]="loading" mat-stroked-button>
+                                <span *ngIf="loading"></span>
+                                Register
+                            </button>
+                            <a routerLink="../sign-in"  mat-button>Login</a>
+                        </div>
+                        <div *ngIf="t.invalid && loading == true" class="warn">
+                            Please fill the form correctly
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
-        </mat-card-content>
-</mat-card>
+            </form>
+            </mat-card-content>
+    </mat-card>
+</div>
