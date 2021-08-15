@@ -7,11 +7,25 @@ import { AlertService, SessionService } from '@app/shared/services';
 import { first } from 'rxjs/operators';
 import { ExternalAuthService } from '../../services/external-auth.service';
 import { ExternalFaceAuthComponent } from '../external-face-auth/external-face-auth.component';
+import { animate, style, transition, trigger } from '@angular/animations';
+
 
 @Component({
   selector: 'app-external-login',
   templateUrl: './external-login.component.html',
-  styleUrls: ['./external-login.component.less']
+  styleUrls: ['./external-login.component.less'],
+  animations: [
+    trigger('inOutAnimation', [
+      transition(':enter', [
+        style({transform: 'translateX(-100%)',opacity: 0}),
+        animate('500ms ease-in', style({transform: 'translateX(0%)',opacity : 1}))
+      ]),
+      transition(':leave', [
+        style({transform: 'translateY(0%)',opacity: 1}),
+        animate('500ms ease-out', style({transform: 'translateY(-100%)',opacity : 0}))
+      ]),
+    ]),
+  ],
 })
 export class ExternalLoginComponent implements OnInit {
 
@@ -47,10 +61,8 @@ export class ExternalLoginComponent implements OnInit {
         }
         this.sessionService.isLoggedIn().subscribe(logged => {
             if(logged == true){
-                let info = this.sessionService.UserInfo;
                 let existingUser = new ExternalLoginAuthTokenReqModel();
 
-                existingUser.authToken = info.userToken;
                 existingUser.client_id = this.client_id;
                 existingUser.redirect_uri = this.redirect_uri;
                 existingUser.scope = this.scope;

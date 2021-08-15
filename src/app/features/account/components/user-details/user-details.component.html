@@ -3,8 +3,16 @@
         <mat-card-header fxLayoutAlign="center center">
             <mat-card-title>User Details</mat-card-title>
         </mat-card-header>
-        <mat-card-content>
-            Here will be the connected user details 
+        <mat-card-content fxLayoutAlign="center start" fxLayout="column"  fxLayoutGap="20px">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <div><h3 style="margin-bottom: 0px;"><b>Email : </b></h3></div> <span>{{email}}</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <div><h3 style="margin-bottom: 0px;"><b>First Name : </b></h3></div> <span>{{firstName}}</span>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">    
+                <div><h3 style="margin-bottom: 0px;"><b>Last Name : </b></h3></div> <span>{{lastName}}</span>
+            </div>
         </mat-card-content>
     </mat-card>
 </div>

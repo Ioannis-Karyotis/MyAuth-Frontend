@@ -6,7 +6,7 @@ import { environment } from '@environments/environment';
 import { HttpResponseData } from '../models/general';
 import { SessionService } from './session.service';
 import { HttpOptions } from '@app/shared/constants';
-import { SuccessfulExternalLoginRespModel, SuccessfulLoginFirstStepRespModel, SuccessfulLoginRespModel, SuccessfulRegisterRespModel } from '@app/shared/models/responseModels';
+import { SuccessfulExternalLoginRespModel, SuccessfulLoginFirstStepRespModel, SuccessfulLoginRespModel, SuccessfulRegisterRespModel, UserConnectedAppsRespModel, UserDetailDetailsRespModel } from '@app/shared/models/responseModels';
 import { ClientsApiErrorCodes } from '../enums';
 import { ExternalLoginAuthTokenReqModel, ExternalLoginReqModel, LoginFacialReqModel, LoginReqModel, RegisterReqModel } from '@app/shared/models/requestModels';
 
@@ -49,7 +49,15 @@ export class ApiService {
   }
 
   public ExternalAuthTokenSignIn(existingUser : ExternalLoginAuthTokenReqModel){
-    return this.http.post<HttpResponseData<SuccessfulExternalLoginRespModel , ClientsApiErrorCodes>>(`${environment.apiUrl}/accounts/oauth2/external/external/sign-in/auth/token`,existingUser, this.httpOptions)
+    return this.http.post<HttpResponseData<SuccessfulExternalLoginRespModel , ClientsApiErrorCodes>>(`${environment.apiUrl}/accounts/oauth2/external/sign-in/auth/token`,existingUser, this.httpOptions)
+  }
+
+  public UserDetails(){
+    return this.http.get<HttpResponseData<UserDetailDetailsRespModel, ClientsApiErrorCodes>>(`${environment.apiUrl}/api/account/user-details`, this.httpOptions)
+  }
+
+  public UserConnectedApps(){
+    return this.http.get<HttpResponseData<UserConnectedAppsRespModel, ClientsApiErrorCodes>>(`${environment.apiUrl}/api/account/user-connected-apps`, this.httpOptions)
   }
 
 }
