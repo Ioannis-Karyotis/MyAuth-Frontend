@@ -1,0 +1,7 @@
+<div class="outlet" fxLayout="column" fxLayoutAlign="center center" >
+    <h1>Are you sure?</h1>
+    <div mat-dialog-actions>
+    <button mat-button (click)="onReject()">No</button>
+    <button mat-button [mat-dialog-close]="'Yes'" cdkFocusInitial>Yes</button>
+    </div>
+</div>

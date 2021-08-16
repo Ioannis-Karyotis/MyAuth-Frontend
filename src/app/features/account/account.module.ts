@@ -11,10 +11,12 @@ import { TranslateModule } from '@ngx-translate/core';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { ConnectedAppsComponent } from './components/connected-apps/connected-apps.component';
 import { MyAppsComponent } from './components/my-apps/my-apps.component';
+import { AddNewAppComponent } from './components/add-new-app/add-new-app.component';
+import { AppDetailsComponent } from './components/app-details/app-details.component';
 
 
 @NgModule({
-  declarations: [HomeComponent, UserDetailsComponent, ConnectedAppsComponent, MyAppsComponent],
+  declarations: [HomeComponent, UserDetailsComponent, ConnectedAppsComponent, MyAppsComponent, AddNewAppComponent, AppDetailsComponent],
   imports: [
     CommonModule,
     AccountRoutingModule,

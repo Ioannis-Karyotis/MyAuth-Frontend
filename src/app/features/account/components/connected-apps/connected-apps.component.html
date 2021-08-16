@@ -24,7 +24,7 @@
                 <ng-container matColumnDef="Options">
                   <th mat-header-cell *matHeaderCellDef> Options </th>
                   <td mat-cell *matCellDef="let element" fxLayoutGap="10px">
-                    <button mat-stroked-button color="primary">Disconnect</button>         
+                    <button mat-stroked-button color="primary" (click)="disconnectApp(element.id)">Disconnect</button>         
                   </td>
                 </ng-container>
       
@@ -33,7 +33,7 @@
               </table>
       
               <div fxLayout="column" fxLayoutAlign="center center">
-                <h2 *ngIf="connectedApps && connectedApps.length == 0"> You have not connected with other apps</h2>
+                <h2 *ngIf="connectedApps && connectedApps.length == 0" class="noContent"> You have not connected with other apps</h2>
               </div>
               <mat-paginator [pageSizeOptions]="[5, 10]"  [pageSize]="5" showFirstLastButtons></mat-paginator>
         </mat-card-content>

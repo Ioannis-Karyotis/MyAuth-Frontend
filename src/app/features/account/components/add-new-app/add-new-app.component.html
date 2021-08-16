@@ -1,0 +1,40 @@
+<div fxLayout="row" fxLayoutAlign="center start" class="outlet" >
+    <mat-card color="primary" fxLayout="column" fxLayoutGap="20px" fxFlex="90" fxFlex.sm="80" fxFlex.xs="100" style="margin-top: 5em;">
+        <mat-card-header fxLayoutAlign="center center">
+            <mat-card-title>Add New App</mat-card-title>
+        </mat-card-header>
+        <mat-card-content fxLayout="row" fxLayoutAlign="center center">
+            <div class="section" fxLayout="row" fxLayoutAlign="start" fxLayoutGap="20px"  fxFlex="70" fxFlex.sm="100" fxFlex.xs="100">
+                <div fxLayout="column" fxFlex="100">
+                    <span fxLayout="row" fxLayoutAlign="start start"  fxLayoutGap="40px">
+                        <h3><b>Add new apps's details</b></h3>
+                    </span>
+                    <form [formGroup]="firstFormGroup" (ngSubmit)="onSubmit()" fxLayout="column" fxLayoutAlign="center stretch"  fxLayoutGap="10px"> 
+                        <mat-form-field color="accent" appearance="outline" >
+                            <mat-label>App Name</mat-label>
+                            <input matInput formControlName="appName">
+                            <mat-error *ngIf="f.appName.errors">{{getAppNameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field  color="accent" appearance="outline" >
+                            <mat-label>App Base Url</mat-label>
+                            <input matInput formControlName="baseUrl">
+                            <mat-error *ngIf="f.baseUrl.errors">{{getBaseUrlErrorMessage()}}</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field  color="accent" appearance="outline" >
+                            <mat-label>Redirect Url</mat-label>
+                            <input matInput formControlName="redirectUrl">
+                            <mat-error *ngIf="f.redirectUrl.errors">{{getRedirectUrlErrorMessage()}}</mat-error>
+                        </mat-form-field>
+
+                        <button  [disabled]="loading" mat-raised-button color="accent" type="submit">
+                            <span *ngIf="loading"></span>
+                            Add app
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>        

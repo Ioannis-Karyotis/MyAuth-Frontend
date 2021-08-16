@@ -1,17 +1,77 @@
 <div fxLayout="row" fxLayoutAlign="center start" class="outlet" >
     <mat-card color="primary" fxLayout="column" fxLayoutGap="20px" fxFlex="90" fxFlex.sm="80" fxFlex.xs="100" style="margin-top: 5em;">
         <mat-card-header fxLayoutAlign="center center">
-            <mat-card-title>User Details</mat-card-title>
+            <mat-card-title>User Profile</mat-card-title>
         </mat-card-header>
-        <mat-card-content fxLayoutAlign="center start" fxLayout="column"  fxLayoutGap="20px">
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-                <div><h3 style="margin-bottom: 0px;"><b>Email : </b></h3></div> <span>{{email}}</span>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-                <div><h3 style="margin-bottom: 0px;"><b>First Name : </b></h3></div> <span>{{firstName}}</span>
-            </div>
-            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">    
-                <div><h3 style="margin-bottom: 0px;"><b>Last Name : </b></h3></div> <span>{{lastName}}</span>
+        <mat-card-content fxLayout="row" fxLayoutAlign="center center"  fxLayoutGap="20px">
+            <div  fxLayout="row" fxLayoutAlign="center center" fxLayout.sm="column" fxLayout.xs="column" fxLayoutAlign.sm ="center center" fxLayoutAlign.xs ="center center"  fxFlex="100" fxLayoutGap="50px">
+                <div class="section" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="20px"  fxFlex="50"  fxFlex.sm="100" fxFlex.xs="100">
+                    <span fxLayout="row" fxLayoutAlign="center center"  fxLayoutGap="40px">
+                        <h3><b>User Info</b></h3>
+                        <button (click)="toggleVisibilityDetails()" mat-stroked-button style="width:2em;margin-bottom: 3em;"><mat-icon>create</mat-icon></button>
+                    </span>
+                    <form [formGroup]="firstFormGroup" (ngSubmit)="onSubmitDetails()" fxLayout="column" fxLayoutAlign="center stretch"  fxLayoutGap="10px"> 
+                        <mat-form-field color="accent" appearance="outline" >
+                            <mat-label>First Name</mat-label>
+                            <input matInput formControlName="name">
+                            <mat-error *ngIf="f.name.errors">{{getNameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+    
+                        <mat-form-field  color="accent" appearance="outline" >
+                            <mat-label>Last Name</mat-label>
+                            <input matInput formControlName="surname">
+                            <mat-error *ngIf="f.surname.errors">{{getSurnameErrorMessage()}}</mat-error>
+                        </mat-form-field>
+    
+                        <button  [disabled]="loadingDetails" mat-raised-button color="accent" type="submit" [disabled]="disabledDetails">
+                            <span *ngIf="loadingDetails"></span>
+                            Edit Details
+                        </button>
+                    </form>
+                </div>
+
+                <div class="section" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="20px"  fxFlex="50"  fxFlex.sm="100" fxFlex.xs="100">
+                    <span fxLayout="row" fxLayoutAlign="center center"  fxLayoutGap="40px">
+                        <h3><b>Change Password</b></h3>
+                        <button (click)="toggleVisibilityPass()" mat-stroked-button style="width:2em;margin-bottom: 3em;"><mat-icon>create</mat-icon></button>
+                    </span>
+                    <form [formGroup]="secondFormGroup" (ngSubmit)="onSubmitPass()" fxLayout="column" fxLayoutAlign="center stretch"  fxLayoutGap="30px"> 
+                        
+                        <mat-form-field color="accent" appearance="outline" >
+                            <mat-label>Old Password</mat-label>
+                            <input matInput  matInput [type]="hide ? 'password' : 'text'" formControlName="oldPass">
+                            <button [disabled]="disabledPass" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" type="button" [attr.aria-pressed]="hide" style="position:absolute; right:0; bottom:-5px;">
+                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="f2.oldPass.errors">{{getOldPassErrorMessage()}}</mat-error>
+                        </mat-form-field>
+    
+                        <mat-form-field class="example-full-width" color="accent" appearance="outline" >
+                            <mat-label>New Password</mat-label>
+                            <input matInput  matInput [type]="hide2 ? 'password' : 'text'" formControlName="password">
+                            <button [disabled]="disabledPass" mat-icon-button matSuffix (click)="hide2 = !hide2" [attr.aria-label]="'Hide password'" type="button" [attr.aria-pressed]="hide2" style="position:absolute; right:0; bottom:-5px;">
+                                <mat-icon>{{hide2 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="f2.password.errors">{{getNewPassErrorMessage()}}</mat-error>
+                        </mat-form-field>
+    
+                        <mat-form-field class="example-full-width" color="accent" appearance="outline" >
+                            <mat-label>Confirm New Password</mat-label>
+                            <input matInput  matInput [type]="hide3 ? 'password' : 'text'" formControlName="confirmPassword">
+                            <button [disabled]="disabledPass" mat-icon-button matSuffix (click)="hide3 = !hide3" [attr.aria-label]="'Hide password'" type="button" [attr.aria-pressed]="hide3" style="position:absolute; right:0; bottom:-5px;">
+                                <mat-icon>{{hide3 ? 'visibility_off' : 'visibility'}}</mat-icon>
+                            </button>
+                            <mat-error *ngIf="f2.confirmPassword.errors">{{getNewPassValErrorMessage()}}</mat-error>
+                        </mat-form-field>
+                        <div *ngIf="t2.errors?.passwordsMatchValidator" style="color:red">
+                            {{ getPasswordsMatchErrorMessage()}}
+                        </div>
+                        <button  [disabled]="loadingPass" mat-raised-button color="accent" type="submit" [disabled]="disabledPass">
+                            <span *ngIf="loadingPass"></span>
+                            Change Password
+                        </button>
+                    </form>
+                </div>
             </div>
         </mat-card-content>
     </mat-card>

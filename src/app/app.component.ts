@@ -5,6 +5,7 @@ import { RouterOutlet } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { SessionService } from './shared/services';
 import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from './shared/components/confirm-dialog/confirm-dialog.component';
 
 @Component(
 { 
@@ -31,6 +32,14 @@ export class AppComponent{
     }
 
     logout() {
-        this.sessionService.logout();
+      const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+        width: '500px',
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        if(result == 'Yes'){
+          this.sessionService.logout();
+        }
+      });
     }
 }

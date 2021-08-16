@@ -10,6 +10,10 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthTokenInterceptor, ErrorInterceptor,LoaderInterceptor, RenewAuthTokenInterceptor } from '@app/shared/helpers/interceptors';
 import { CountdownModule } from 'ngx-countdown';
 import { FaceRegistrationComponent } from './components/face-registration/face-registration.component';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -18,7 +22,7 @@ import { FaceRegistrationComponent } from './components/face-registration/face-r
     FaceAuthComponent,
     LoaderComponent,
     FaceRegistrationComponent,
-    
+    ConfirmDialogComponent
   ],
   imports: [
     CommonModule,
@@ -27,7 +31,10 @@ import { FaceRegistrationComponent } from './components/face-registration/face-r
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    CountdownModule 
+    MatDialogModule,
+    CountdownModule,
+    MatFormFieldModule,
+    MatInputModule 
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
@@ -38,6 +45,7 @@ import { FaceRegistrationComponent } from './components/face-registration/face-r
  exports :[
     LoaderComponent,
     MaterialModule,
-  ],
+    
+  ]
 })
 export class SharedModule { }
