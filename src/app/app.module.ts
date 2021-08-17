@@ -61,31 +61,32 @@ export function HttpLoaderFactory(http: HttpClient): any {
 export function loadRemoteEnv(sessionService: SessionService) {
     return () => {
         return new Promise<void>((resolve) => {
-            sessionService.isLoggedIn().subscribe(async loggedIn => {
-                if(loggedIn == true) {
-                    resolve();
-                }else{
-                    await faceapi.nets.ssdMobilenetv1.loadFromUri('/assets/faceModels');
-                    await faceapi.nets.faceLandmark68Net.loadFromUri('/assets/faceModels');
-                    await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/faceModels');
-                    await faceapi.nets.faceExpressionNet.loadFromUri('/assets/faceModels');
-                    await faceapi.loadTinyFaceDetectorModel('/assets/faceModels');
+            resolve();
+            // sessionService.isLoggedIn().subscribe(async loggedIn => {
+            //     if(loggedIn == true) {
+            //         resolve();
+            //     }else{
+            //         await faceapi.nets.ssdMobilenetv1.loadFromUri('/assets/faceModels');
+            //         await faceapi.nets.faceLandmark68Net.loadFromUri('/assets/faceModels');
+            //         await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/faceModels');
+            //         await faceapi.nets.faceExpressionNet.loadFromUri('/assets/faceModels');
+            //         await faceapi.loadTinyFaceDetectorModel('/assets/faceModels');
 
-                    let base_image = new Image();
-                    base_image.src = "/assets/startFaceDetect.png";
-                    base_image.onload = function() {
-                        const fullFaceDescription = faceapi
-                        .detectSingleFace(base_image)
-                        .withFaceLandmarks()
-                        .withFaceExpressions()
-                        .withFaceDescriptor()
-                        .run()
-                        .then(res => {
-                            resolve();
-                        });
-                    };
-                }
-            });
+            //         let base_image = new Image(512,512);
+            //         base_image.src = "/assets/startFaceDetect.png";
+            //         base_image.onload = function() {
+            //             resolve();
+            //             const fullFaceDescription = faceapi
+            //             .detectSingleFace(base_image)
+            //             .withFaceLandmarks()
+            //             .withFaceExpressions()
+            //             .withFaceDescriptor()
+            //             .run()
+            //             .then(res => {
+            //             });
+            //         };
+            //     }
+            // });
             
         })
     }

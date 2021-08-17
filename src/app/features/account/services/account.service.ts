@@ -104,6 +104,20 @@ export class AccountService {
     );
   }
 
+
+  deleteApp(id:string){
+    return this.apiService.DeleteApp(id)
+    .pipe(
+      map(successResp => {
+        return successResp;
+      }),
+      catchError((err) => {
+          console.log('error caught in service')
+          return throwError(err);    //Rethrow it back to component
+      })
+    );
+  }
+
   RefreshSecrets(id:string){
     return this.apiService.RefreshSecrets(id)
     .pipe(

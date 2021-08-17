@@ -19,6 +19,7 @@ export class AppDetailsComponent implements OnInit {
 
   appId : string
   appDetails : AppDetailsRespModel;
+  secondFormGroup: FormGroup;
     
   constructor(
     private accountService : AccountService,
@@ -47,6 +48,10 @@ export class AppDetailsComponent implements OnInit {
             baseUrl : this.appDetails.baseUrl,
             redirectUrl : this.appDetails.redirectUrl
           });
+          this.secondFormGroup.patchValue({
+            clientId:  this.appDetails.clientId,
+            clientSecret : this.appDetails.clientSecret
+          });
         }
       },
       error: error => {
@@ -62,6 +67,10 @@ export class AppDetailsComponent implements OnInit {
       appName: [ '', Validators.required],
       baseUrl: ['',Validators.required],
       redirectUrl: ['',Validators.required]
+    });
+    this.secondFormGroup = this.formBuilder.group({
+      clientId: [ '', Validators.required],
+      clientSecret: ['',Validators.required],
     });
     this.getAppDetails();
   }

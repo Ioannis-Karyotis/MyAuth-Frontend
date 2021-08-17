@@ -84,6 +84,10 @@ export class ApiService {
     return this.http.post<HttpResponseData<boolean, ClientsApiErrorCodes>>(`${environment.apiUrl}/api/account/edit-app-details/${id}`,post, this.httpOptions)
   }
 
+  public DeleteApp(id:string){
+    return this.http.post<HttpResponseData<boolean, ClientsApiErrorCodes>>(`${environment.apiUrl}/api/account/delete-app/${id}`,"", this.httpOptions)
+  }
+
   public RefreshSecrets(id:string){
     return this.http.post<HttpResponseData<boolean, ClientsApiErrorCodes>>(`${environment.apiUrl}/api/account/refresh-app-secrets/${id}`,"", this.httpOptions)
   }
